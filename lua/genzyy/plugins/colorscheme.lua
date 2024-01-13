@@ -6,6 +6,7 @@ return {
 		local tokyonight = require("tokyonight")
 		tokyonight.setup({
 			style = "night",
+			transparent = true,
 			styles = {
 				comments = { italic = true },
 				keyword = { italic = false },
