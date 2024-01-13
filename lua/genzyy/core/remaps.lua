@@ -33,3 +33,9 @@ keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 keymap.set("n", "<C-d>", ":DiffviewOpen<CR>")
 keymap.set("n", "<C-S-d>", ":DiffviewClose<CR>")
 keymap.set("n", "<leader>d", ":DiffViewFileHistory")
+
+-- Go to reference
+keymap.set("n", "gr", ":Telescope lsp_references<CR>")
+
+-- lsp hover definition
+keymap.set("n", "K", vim.lsp.buf.hover)
