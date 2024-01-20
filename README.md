@@ -21,4 +21,6 @@ After this I decided to create my own config that is 100% written by me, and is 
 
 __Note__: Having a lot of LSPs and linters installed will not be a problem. They are lazily loaded too (thanks to folke for lazy.nvim!) and will not affect performance too much.
 
+## Suggestion
 
+Don't copy or use this config if you want to understand everything, instead learn from it. If you want everything to work in your way, then you should write the config by yourself. Or you want to use a pre-made config that just works, then I am happy if the config works for you! Create an issue or a PR if you think anything can be made better!
