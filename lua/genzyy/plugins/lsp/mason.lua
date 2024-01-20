@@ -1,58 +1,36 @@
 return {
   "williamboman/mason.nvim",
   name = "mason",
-  dependencies = {
-    "williamboman/mason-lspconfig.nvim",
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
+  cmd = "Mason",
+  keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
+  build = ":MasonUpdate",
+  opts = {
+    ensure_installed = {
+      "stylua",
+      "shfmt",
+      -- "flake8",
+    },
   },
-  config = function()
-    local mason = require("mason")
-    local mason_lspconfig = require("mason-lspconfig")
-    local mason_tool_installer = require("mason-tool-installer")
-    mason.setup({
-      ui = {
-        icons = {
-          package_installed = "✓",
-          package_pending = "➜",
-          package_uninstalled = "✗",
-        },
-        border = "double",
-        width = 0.7,
-        height = 0.7,
-      },
-    })
 
-    -- mason-lspconfig
-    mason_lspconfig.setup({
-      ensure_installed = {
-        "lua_ls",
-        "rust_analyzer",
-      },
-      -- auto installation
-      automatic_installation = true,
-    })
+  ---@param opts MasonSettings | {ensure_installed: string[]}
+  config = function(_, opts)
+    require("mason").setup(opts)
+    local mr = require("mason-registry")
+    local function ensure_installed()
 
-    -- mason-tool-installer
-    mason_tool_installer.setup({
-      ensure_installed = {
-        -- you can turn off/on auto_update per tool
-        { "lua-language-server" },
-        { "vim-language-server" },
-        { "stylua" },
-        { "editorconfig-checker" },
-        { "pyright" },
-        { "black" },
-        { "autopep8" },
-        { "json-lsp" },
-        { "clangd" },
-        { "clang-format" },
-        { "gopls" },
-      },
+      for _, tool in ipairs(opts.ensure_installed) do
+        local p = mr.get_package(tool)
+        if not p:is_installed() then
+          p:install()
+        end
+      end
+    end
 
-      auto_update = true,
-      run_on_start = true,
-      start_delay = 3000, -- 3 second delay
-      debounce_hours = 5, -- at least 5 hours between attempts to install/update
-    })
+    if mr.refresh then
+      mr.refresh(ensure_installed)
+    else
+      ensure_installed()
+    end
+
   end,
-}
+  }

@@ -20,7 +20,7 @@ lazy.setup({
     -- import plugin directory
     spec = {
         {import = "genzyy.plugins"},
-        {import = "genzyy.plugins.lsp"},
+        -- {import = "genzyy.plugins.lsp"},
     },
     
     -- ui config

@@ -1,36 +1,116 @@
-return {
+return {{
   "nvim-treesitter/nvim-treesitter",
+  -- plugin display name
+  name = "nvim-treesitter",
+  -- last version is too old
+  version = false,
+  -- run TSUpdate on install/update
   build = ":TSUpdate",
-  name = "treesitter",
-  event = "bufWinEnter",
-  lazy = false,
-  init = function()
-    local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
-    ts_update()
+  -- lazy events for better performance
+  event = { "VeryLazy" },
+  -- run function when loading the plugin
+  init = function(plugin)
+    require("lazy.core.loader").add_to_rtp(plugin)
+    require("nvim-treesitter.query_predicates")
   end,
-  config = function()
-    local configs = require("nvim-treesitter.configs")
-
-    configs.setup({
-      ensure_installed = {
-        "c",
-        "lua",
-        "python",
-        "javascript",
-        "typescript",
-        "rust",
-        "vim",
-        "go",
-        "gomod",
-        "gowork",
-        "gosum",
+  -- plugin dependencies and its configuration
+  dependencies = {
+    {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      config = function()
+        -- When in diff mode, we want to use the default
+        -- vim text objects c & C instead of the treesitter ones.
+        local move = require("nvim-treesitter.textobjects.move") ---@type table<string,fun(...)>
+        local configs = require("nvim-treesitter.configs")
+        for name, fn in pairs(move) do
+          if name:find("goto") == 1 then
+            move[name] = function(q, ...)
+              if vim.wo.diff then
+                local config = configs.get_module("textobjects.move")[name] ---@type table<string,string>
+                for key, query in pairs(config or {}) do
+                  if q == query and key:find("[%]%[][cC]") then
+                    vim.cmd("normal! " .. key)
+                    return
+                  end
+                end
+              end
+              return fn(q, ...)
+            end
+          end
+        end
+      end,
+    },
+  },
+  cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
+  -- @type TSConfig
+  -- @diagnostic disable-next-line: missing-fields
+  opts = {
+    highlight = {enable = true,},
+    indent = {enable = true},
+    ensure_installed = {
+      "c",
+      "javascript",
+      "lua",
+      "luadoc",
+      "luap",
+      "markdown",
+      "markdown_inline",
+      "python",
+      "query",
+      "regex",
+      "toml",
+      "tsx",
+      "typescript",
+      "vim",
+      "vimdoc",
+      "yaml",
+    },
+    incremental_selection = {
+      enable = true,
+      keymaps = {
+        init_selection = "<C-space>",
+        node_incremental = "<C-space>",
+        scope_incremental = false,
+        node_decremental = "<bs>",
       },
-      sync_install = false,
-      auto_install = false,
-      highlight = {
+    },
+    textobjects = {
+      move = {
         enable = true,
-        additional_vim_regex_highlighting = false,
+        goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
+        goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
+        goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
+        goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
       },
-    })
-  end,
+    },
+  },
+  --- @param opts TSConfig
+  config = function(_, opts)
+    if type(opts.ensure_installed) == "table" then
+      ---@type table<string, boolean>
+      local added = {}
+      opts.ensure_installed = vim.tbl_filter(function(lang)
+        if added[lang] then
+          return false
+        end
+        added[lang] = true
+        return true
+      end, opts.ensure_installed)
+    end
+    require("nvim-treesitter.configs").setup(opts)
+  end
+},
+{
+  "nvim-treesitter/nvim-treesitter-context",
+  name = "nvim-tresitter-context",
+  enabled = true,
+  opts = { mode = "cursor", max_lines = 3 },
+},
+-- Automatically add closing tags for HTML and JSX
+{
+  "windwp/nvim-ts-autotag",
+  name = "nvim-ts-autotag",
+  opts = {},
+},
+
 }
