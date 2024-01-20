@@ -13,30 +13,29 @@ vim.opt.rtp:prepend(lazypath)
 
 local installed, lazy = pcall(require, "lazy")
 if not installed then
-    return
+  return
 end
 
 lazy.setup({
-    -- import plugin directory
-    spec = {
-        {import = "genzyy.plugins"},
-        -- {import = "genzyy.plugins.lsp"},
-    },
-    
-    -- ui config
-    ui = {
-        border = "double",
-        size = {
-            width = 0.7,
-            height = 0.7
-        },
-    },
-    checker = {
-        enabled = true,
-        notify = false,
-    },
-    change_detection = {
-        notify = false,
-    },
+  -- import plugin directory
+  spec = {
+    -- specify the dir to look for plugins
+    { import = "genzyy.plugins" },
+  },
 
+  -- ui config
+  ui = {
+    border = "double",
+    size = {
+      width = 0.7,
+      height = 0.7,
+    },
+  },
+  checker = {
+    enabled = true,
+    notify = false,
+  },
+  change_detection = {
+    notify = false,
+  },
 })
