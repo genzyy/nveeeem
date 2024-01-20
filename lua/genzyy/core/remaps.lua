@@ -4,8 +4,8 @@ local keymap = vim.keymap
 keymap.set("n", "<leader>n", vim.cmd.Ex)
 
 -- move lines
-keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true })
+keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true })
 
 -- clear search highlights
 keymap.set("n", "<leader>c", ":nohl<CR>")

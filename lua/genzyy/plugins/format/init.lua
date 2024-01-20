@@ -3,4 +3,5 @@ return {
   require("genzyy.plugins.format.spectre"),
   require("genzyy.plugins.format.trouble"),
   require("genzyy.plugins.format.autopairs"),
+  require("genzyy.plugins.format.comment"),
 }
