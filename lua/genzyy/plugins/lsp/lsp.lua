@@ -76,6 +76,7 @@ return {
         ensure_installed = {
           "marksman",
           "lua_ls",
+          "gopls",
         },
         handlers = {
           lsp_zero.default_setup,
