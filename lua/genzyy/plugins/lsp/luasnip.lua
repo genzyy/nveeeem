@@ -1,6 +1,7 @@
 return {
   "L3MON4D3/LuaSnip",
   version = false,
+  event = "InsertEnter",
   run = "make install_jsregexp",
   dependencies = {
     {
