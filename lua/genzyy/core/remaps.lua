@@ -32,7 +32,7 @@ keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 -- Diffview keymaps
 keymap.set("n", "<C-d>", ":DiffviewOpen<CR>")
 keymap.set("n", "<C-S-d>", ":DiffviewClose<CR>")
-keymap.set("n", "<leader>d", ":DiffViewFileHistory")
+keymap.set("n", "<leader>d", ":DiffviewFileHistory")
 
 -- Go to reference
 keymap.set("n", "gr", ":Telescope lsp_references<CR>")
