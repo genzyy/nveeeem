@@ -1,7 +1,7 @@
 return {
-  "nyoom-engineering/oxocarbon.nvim",
-  name = "oxocarbon",
+  "rose-pine/neovim",
+  name = "rose-pine",
   config = function()
-    vim.cmd([[colorscheme oxocarbon]])
+    vim.cmd([[colorscheme rose-pine]])
   end,
 }
