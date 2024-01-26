@@ -33,7 +33,7 @@ return {
       },
       sections = {
         lualine_a = { "mode" },
-        lualine_b = { "branch" },
+        lualine_b = {},
 
         lualine_c = {
           {
@@ -45,27 +45,27 @@ return {
               hint = icons.diagnostics.Hint,
             },
           },
-          { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-          -- { utils.pretty_path() },
+          -- { "filetype", icon_only = true,    separator = "", padding = { left = 1, right = 0 } },
+          { "filename", path = 1 },
         },
         lualine_x = {
           -- stylua: ignore
-          --{
-            --function() return require("noice").api.status.command.get() end,
-            --cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
-            --color = utils.ui.fg("Statement"),
-          --},
+          {
+            function() return require("noice").api.status.command.get() end,
+            cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
+            color = utils.fg("Statement"),
+          },
+          -- stylua: ignore
+          {
+            function() return require("noice").api.status.mode.get() end,
+            cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
+            color = utils.fg("Constant"),
+          },
           -- stylua: ignore
           --{
-            --function() return require("noice").api.status.mode.get() end,
-            --cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-            --color = utils.ui.fg("Constant"),
-          --},
-          -- stylua: ignore
-          --{
-            --function() return "  " .. require("dap").status() end,
-            --cond = function () return package.loaded["dap"] and require("dap").status() ~= "" end,
-            --color = utils.ui.fg("Debug"),
+          --function() return "  " .. require("dap").status() end,
+          --cond = function () return package.loaded["dap"] and require("dap").status() ~= "" end,
+          --color = utils.ui.fg("Debug"),
           --},
           {
             require("lazy.status").updates,
@@ -92,7 +92,7 @@ return {
           },
         },
         lualine_y = {
-          { "progress", separator = " ", padding = { left = 1, right = 0 } },
+          { "progress", separator = " ",                  padding = { left = 1, right = 0 } },
           { "location", padding = { left = 0, right = 1 } },
         },
         lualine_z = {
