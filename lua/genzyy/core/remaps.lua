@@ -39,3 +39,7 @@ keymap.set("n", "gr", ":Telescope lsp_references<CR>")
 
 -- lsp hover definition
 keymap.set("n", "K", vim.lsp.buf.hover)
+
+-- hasten use predefined maps
+keymap.set("n", "<leader>h", ":HastenUsePredefinedMaps<CR>", { silent = true })
+keymap.set("n", "<leader>g", ":HastenViewMaps<CR>", { silent = true })
